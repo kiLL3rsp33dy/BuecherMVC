@@ -35,7 +35,7 @@ namespace BuecherMVC.Controllers
 
             //var worker = new ThreadT(model1);
             //worker.StarteThread();
-            
+            //
 
             //ViewBag.Modell = model1.Buecher;          
             //var model1 = repository.HoleAktuelleBuecher();
