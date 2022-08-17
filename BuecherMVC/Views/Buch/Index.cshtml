@@ -1,0 +1,59 @@
+﻿
+
+
+
+
+
+ <div class="container">
+     <div class="row">
+         <div class="col">
+            <p>Aktuelle Buecher:</p>
+            <table class="table table-hover mb-0">
+                <thead>
+                    <tr>
+                        <td>ID</td>
+                        <td>Titel</td>
+                        <td>Autor</td>
+                        <td>Aktionen</td> 
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var buch in Model.Buecher)
+                    {
+                        <tr>
+                            <td>@buch.Id</td>
+                            <td>@buch.Titel</td>
+                            <td>@buch.Autor</td>
+                            <td><a asp-action=VerschiebeAktuelleBuecher asp-controller=Buch asp-route-id=@buch.Id>Verschieben</a></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="col">
+            <p>Archivierte Buecher:</p>
+            <table class="table table-hover mb-0"> 
+            <thead>
+                <tr>
+                    <td>ID</td>
+                    <td>Titel</td>
+                    <td>Autor</td>
+                    <td>Aktionen</td>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var buch in Model.ArchivierteBuecher)
+                {
+                    <tr>
+                        <td>@buch.Id</td>
+                        <td>@buch.Titel</td>
+                        <td>@buch.Autor</td>
+                        <td><a asp-action=VerschiebeArchivierteBuecher asp-controller=Buch asp-route-id=@buch.Id>Verschieben</a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        </div>
+    </div>
+</div>
+
