@@ -9,6 +9,7 @@ namespace BuecherMVC.Controllers
     public class BuchController : Controller
     {
 
+        // Holt die Anmeldedaten für die Datenbank
         private readonly KonfigurationsLeser _konfigurationsLeser;
         public BuchController(KonfigurationsLeser konfigurationsleser)
         {
@@ -46,6 +47,7 @@ namespace BuecherMVC.Controllers
         }
 
 
+        // Verschiebt Buch von Aktuell in Archiviert
         [HttpGet]
         public IActionResult VerschiebeAktuelleBuecher(int id)
         {
@@ -58,6 +60,7 @@ namespace BuecherMVC.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        // Verschiebt Buch von Archiviert in Aktuell
         [HttpGet]
         public IActionResult VerschiebeArchivierteBuecher(int id)
         {

@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 
 namespace BuchDatenbank
 {
+
+    // Stellt Verbindung zur Tabelle in der Datenbank her
     public class DatenbankKontext : DbContext
     {
         private readonly string _connectionString;
@@ -16,12 +18,13 @@ namespace BuchDatenbank
             _connectionString = connectionString;
         }
 
-        // Gibt an auf welche Datenbank verbunden werden soll --> hier verweis mit connectioonstring
+        // Gibt an auf welche Datenbank verbunden werden soll --> Verweis mit connectioonstring
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseMySql(_connectionString, ServerVersion.AutoDetect(_connectionString));
         }
 
+        // Tabellen in Datenbank
         public DbSet<BuchDTO> Aktuelle_Buecher { get; set; }
         public DbSet<archiviertesBuchDTO> Archivierte_Buecher { get; set; }
 
