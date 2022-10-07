@@ -29,18 +29,19 @@ namespace BuchDatenbank
         }
 
         // Aufbau Verbindung und Abfragen der Informationen aus der Datenbank
-        public List<archiviertesBuchDTO> HoleArchivierteBuecher()
-        {
-            return _kontext.Archivierte_Buecher.ToList();           
-        }
+       
 
         public List<BuchDTO> HoleAktuelleBuecher()
         {
             return _kontext.Aktuelle_Buecher.ToList();
         }
 
-       
-        
+        public List<archiviertesBuchDTO> HoleArchivierteBuecher()
+        {
+            return _kontext.Archivierte_Buecher.ToList();
+        }
+
+
         public void VerschiebeAktuellesBuch(int id)
         {
             var BuchInDB = _kontext.Aktuelle_Buecher.First(f => f.Id == id);

@@ -1,5 +1,6 @@
 using BuchDatenbank;
 using BuecherMVC.Controllers;
+using BuecherMVC.DatabaseConfiguration;
 
 var builder = WebApplication.CreateBuilder(args);
 
