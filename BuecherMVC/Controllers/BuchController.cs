@@ -39,12 +39,12 @@ namespace BuecherMVC.Controllers
             var repository = new BuchOrmRepository(holekonfiguration()); // Erstellt neue Instanz der Schnittstelle
             var model1 = new BuecherModell(repository);
 
-            /*
+            
             model1.FaktuelleBuecher();
             model1.FarchivierteBuecher();
-            */
-
             
+
+            /*
             Thread aktuelleBuecherholen = new Thread(() =>
             {
                 model1.FaktuelleBuecher();
@@ -60,7 +60,7 @@ namespace BuecherMVC.Controllers
 
             aktuelleBuecherholen.Join();
             archivierteBuecherholen.Join();
-            
+            */
 
             return View(model1); // Gibt eine Ansicht zurück
         }
