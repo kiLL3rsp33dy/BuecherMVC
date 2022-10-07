@@ -35,12 +35,6 @@ namespace BuchDatenbank
 
     }
 
-        [Column("titel")]
-        public string? Titel { get; set; }
-        [Column("Autor")]
-        public string? Autor { get; set; }
-
-    }
 
 
 }
