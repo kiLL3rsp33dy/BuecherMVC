@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using BuecherMVC.Models;
+using BuecherMVC.DatabaseConfiguration;
 using BuchDatenbank;
 using Buecher;
 using System.Dynamic;
@@ -15,33 +16,51 @@ namespace BuecherMVC.Controllers
         {
             this._konfigurationsLeser = konfigurationsleser;
         }
+
         private string GetConnectionString() // Holt Anmeldedaten für Datenbank
         {
             return _konfigurationsLeser.LiesDatenbankVerbindungZurMariaDB();
         }
 
 
-        // Wird aufgerufen wenn die Buch-Seite angeklickt wird --> Standard-Weiterleitung auf die Index-Seite von Buecher
-        public IActionResult Index()
+        public DatenbankKontext holekonfiguration()
         {
-            // 090 S.12
             string connectionString = this.GetConnectionString(); // Holt die Anmeldedaten für die Datenbank
             var mariadb = new DatenbankKontext(connectionString); // Speichert ConnectionString in Format DatenbankKontext zur Kommunikation mit der Datenbank
 
+            return mariadb;
+        }
 
-            var repository = new BuchOrmRepository(mariadb); // Erstellt neue Instanz der Schnittstelle
+
+
+        // Wird aufgerufen wenn die Buch-Seite angeklickt wird --> Standard-Weiterleitung auf die Index-Seite von Buecher
+        public IActionResult Index()
+        {            
+            var repository = new BuchOrmRepository(holekonfiguration()); // Erstellt neue Instanz der Schnittstelle
             var model1 = new BuecherModell(repository);
+
+            /*
             model1.FaktuelleBuecher();
             model1.FarchivierteBuecher();
+            */
 
-            //var worker = new ThreadT(model1);
-            //worker.StarteThread();
             
+            Thread aktuelleBuecherholen = new Thread(() =>
+            {
+                model1.FaktuelleBuecher();
+            });
 
-            //ViewBag.Modell = model1.Buecher;          
-            //var model1 = repository.HoleAktuelleBuecher();
-            //ViewBag.Model1 = model1;
-            //ViewBag.Model2 = model2;       
+            Thread archivierteBuecherholen = new Thread(() =>
+            {
+                model1.FarchivierteBuecher();
+            });
+            
+            aktuelleBuecherholen.Start();
+            archivierteBuecherholen.Start();
+
+            aktuelleBuecherholen.Join();
+            archivierteBuecherholen.Join();
+            
 
             return View(model1); // Gibt eine Ansicht zurück
         }
@@ -51,33 +70,21 @@ namespace BuecherMVC.Controllers
         [HttpGet]
         public IActionResult VerschiebeAktuelleBuecher(int id)
         {
-            string connectionString = this.GetConnectionString();
-            var mariadb = new DatenbankKontext(connectionString);
-            var repository = new BuchOrmRepository(mariadb);
-
+            var repository = new BuchOrmRepository(holekonfiguration());
             repository.VerschiebeAktuellesBuch(id);
-
             return RedirectToAction(nameof(Index));
         }
 
-        // Verschiebt Buch von Archiviert in Aktuell
+
         [HttpGet]
         public IActionResult VerschiebeArchivierteBuecher(int id)
-        {
-            string connectionString = this.GetConnectionString();
-            var mariadb = new DatenbankKontext(connectionString);
-            var repository = new BuchOrmRepository(mariadb);
+        {            
+            var repository = new BuchOrmRepository(holekonfiguration());
             repository.VerschiebeArchiviertesBuch(id);
-
             return RedirectToAction(nameof(Index));
         }
 
-
-
-
-
-
-        
+                
 
         public class ThreadT
         {
@@ -109,29 +116,10 @@ namespace BuecherMVC.Controllers
 
 
 
+    
 
-    // Schnittstelle: 
-    public class KonfigurationsLeser : IKonfigurationsLeser
-    {
-        private readonly IConfiguration _configuration;
 
-        // Speichert Konfiguration. Von anfang an vorhanden
-        public KonfigurationsLeser(IConfiguration configuration)
-        {
-            this._configuration = configuration;
-        }
-
-        // Liest den ConnectionString aus der appsettings.json und gibt ihn zurück
-        public string LiesDatenbankVerbindungZurMariaDB()
-        {
-            return _configuration.GetConnectionString("MariaDB");
-        }
-
-    }
+    
 }
 
-// Interface: Sammlung abstrakter Methoden
-public interface IKonfigurationsLeser
-{
-    string LiesDatenbankVerbindungZurMariaDB();
-}
+
