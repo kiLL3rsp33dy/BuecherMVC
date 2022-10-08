@@ -22,7 +22,7 @@ namespace BuecherMVC.Controllers
             return _konfigurationsLeser.LiesDatenbankVerbindungZurMariaDB();
         }
 
-
+        /*
         public DatenbankKontext holekonfiguration()
         {
             string connectionString = this.GetConnectionString(); // Holt die Anmeldedaten für die Datenbank
@@ -30,7 +30,9 @@ namespace BuecherMVC.Controllers
 
             return mariadb;
         }
+        */
 
+        //IList<BuecherModell> buechers = new List<BuecherModell>();
 
 
         // Wird aufgerufen wenn die Buch-Seite angeklickt wird --> Standard-Weiterleitung auf die Index-Seite von Buecher
@@ -70,7 +72,9 @@ namespace BuecherMVC.Controllers
         [HttpGet]
         public IActionResult VerschiebeAktuelleBuecher(int id)
         {
-            var repository = new BuchOrmRepository(holekonfiguration());
+            string connectionString = this.GetConnectionString(); // Holt die Anmeldedaten für die Datenbank
+            var mariadb = new DatenbankKontext(connectionString); // Speichert ConnectionString in Format DatenbankKontext zur Kommunikation mit der Datenbank
+            var repository = new BuchOrmRepository(mariadb);
             repository.VerschiebeAktuellesBuch(id);
             return RedirectToAction(nameof(Index));
         }
@@ -78,8 +82,10 @@ namespace BuecherMVC.Controllers
 
         [HttpGet]
         public IActionResult VerschiebeArchivierteBuecher(int id)
-        {            
-            var repository = new BuchOrmRepository(holekonfiguration());
+        {
+            string connectionString = this.GetConnectionString(); // Holt die Anmeldedaten für die Datenbank
+            var mariadb = new DatenbankKontext(connectionString); // Speichert ConnectionString in Format DatenbankKontext zur Kommunikation mit der Datenbank
+            var repository = new BuchOrmRepository(mariadb);
             repository.VerschiebeArchiviertesBuch(id);
             return RedirectToAction(nameof(Index));
         }
