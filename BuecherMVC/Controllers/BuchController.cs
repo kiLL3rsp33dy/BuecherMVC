@@ -22,49 +22,26 @@ namespace BuecherMVC.Controllers
             return _konfigurationsLeser.LiesDatenbankVerbindungZurMariaDB();
         }
 
-        /*
-        public DatenbankKontext holekonfiguration()
-        {
-            string connectionString = this.GetConnectionString(); // Holt die Anmeldedaten für die Datenbank
-            var mariadb = new DatenbankKontext(connectionString); // Speichert ConnectionString in Format DatenbankKontext zur Kommunikation mit der Datenbank
-
-            return mariadb;
-        }
-        */
-
-        //IList<BuecherModell> buechers = new List<BuecherModell>();
 
 
         // Wird aufgerufen wenn die Buch-Seite angeklickt wird --> Standard-Weiterleitung auf die Index-Seite von Buecher
         public IActionResult Index()
-        {            
-            var repository = new BuchOrmRepository(holekonfiguration()); // Erstellt neue Instanz der Schnittstelle
-            var model1 = new BuecherModell(repository);
+        {
+            string connectionString = this.GetConnectionString(); // Holt die Anmeldedaten für die Datenbank
+            var mariadb = new DatenbankKontext(connectionString); // Speichert ConnectionString in Format DatenbankKontext zur Kommunikation mit der Datenbank
+            
+            
+            var repository = new BuchOrmRepository(mariadb); // Erstellt neue Instanz der Schnittstelle
+            var model = new BuecherModell(repository);
 
             
-            model1.FaktuelleBuecher();
-            model1.FarchivierteBuecher();
+            model.FaktuelleBuecher();
+            model.FarchivierteBuecher();
             
 
-            /*
-            Thread aktuelleBuecherholen = new Thread(() =>
-            {
-                model1.FaktuelleBuecher();
-            });
-
-            Thread archivierteBuecherholen = new Thread(() =>
-            {
-                model1.FarchivierteBuecher();
-            });
             
-            aktuelleBuecherholen.Start();
-            archivierteBuecherholen.Start();
 
-            aktuelleBuecherholen.Join();
-            archivierteBuecherholen.Join();
-            */
-
-            return View(model1); // Gibt eine Ansicht zurück
+            return View(model); // Gibt eine Ansicht zurück
         }
 
 
