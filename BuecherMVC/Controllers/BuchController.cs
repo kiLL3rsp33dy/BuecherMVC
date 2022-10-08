@@ -22,26 +22,52 @@ namespace BuecherMVC.Controllers
             return _konfigurationsLeser.LiesDatenbankVerbindungZurMariaDB();
         }
 
+        /*
+        public BuecherModell vier (BuchOrmRepository repository)
+        {
+            var model2 = new BuecherModell(repository);
+            model2.FaktuelleBuecher();
+            model2.FarchivierteBuecher();
+
+            return model2;
+        }
+        */
+        
+        public async Task<BuecherModell> Vier (BuchOrmRepository repository)
+        {
+            var model2 = new BuecherModell(repository);
+            model2.FaktuelleBuecher();
+            model2.FarchivierteBuecher();
+
+             return model2;
+        }
+        
+
 
 
         // Wird aufgerufen wenn die Buch-Seite angeklickt wird --> Standard-Weiterleitung auf die Index-Seite von Buecher
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             string connectionString = this.GetConnectionString(); // Holt die Anmeldedaten für die Datenbank
             var mariadb = new DatenbankKontext(connectionString); // Speichert ConnectionString in Format DatenbankKontext zur Kommunikation mit der Datenbank
-            
-            
             var repository = new BuchOrmRepository(mariadb); // Erstellt neue Instanz der Schnittstelle
+            var model = Vier(repository);
+            
+           
+
+
+            /*
+           
             var model = new BuecherModell(repository);
 
             
             model.FaktuelleBuecher();
             model.FarchivierteBuecher();
-            
+            */
 
-            
 
-            return View(model); // Gibt eine Ansicht zurück
+
+            return View(await model); // Gibt eine Ansicht zurück
         }
 
 
