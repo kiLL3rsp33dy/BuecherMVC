@@ -28,9 +28,9 @@ namespace BuchDatenbank
             this._kontext = kontext;
         }
 
+
         // Aufbau Verbindung und Abfragen der Informationen aus der Datenbank
        
-
         public List<BuchDTO> HoleAktuelleBuecher()
         {
             return _kontext.Aktuelle_Buecher.ToList();

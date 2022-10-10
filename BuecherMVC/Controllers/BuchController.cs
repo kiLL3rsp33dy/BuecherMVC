@@ -10,22 +10,17 @@ namespace BuecherMVC.Controllers
     public class BuchController : Controller
     {
 
-        // Holt die Anmeldedaten für die Datenbank
         private readonly KonfigurationsLeser _konfigurationsLeser;
         public BuchController(KonfigurationsLeser konfigurationsleser)
         {
             this._konfigurationsLeser = konfigurationsleser;
         }
 
-        private string GetConnectionString() // Holt Anmeldedaten für Datenbank
+        // Holt die Anmeldedaten für die Datenbank
+        private string GetConnectionString()
         {
             return _konfigurationsLeser.LiesDatenbankVerbindungZurMariaDB();
         }
-
-        
-       
-        
-
 
 
         // Wird aufgerufen wenn die Buch-Seite angeklickt wird --> Standard-Weiterleitung auf die Index-Seite von Buecher
@@ -44,7 +39,7 @@ namespace BuecherMVC.Controllers
         }
 
 
-        // Verschiebt Buch von Aktuell in Archiviert
+        // Verschiebt Buch von Liste Aktuell in Liste Archiviert
         [HttpGet]
         public IActionResult VerschiebeAktuelleBuecher(int id)
         {
@@ -52,10 +47,11 @@ namespace BuecherMVC.Controllers
             var mariadb = new DatenbankKontext(connectionString); // Speichert ConnectionString in Format DatenbankKontext zur Kommunikation mit der Datenbank
             var repository = new BuchOrmRepository(mariadb);
             repository.VerschiebeAktuellesBuch(id);
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index)); // Weiterleitung auf Index-Seite
         }
 
 
+        // Verschiebt Buch von Liste Archiviert in Liste Aktuell
         [HttpGet]
         public IActionResult VerschiebeArchivierteBuecher(int id)
         {
@@ -65,43 +61,7 @@ namespace BuecherMVC.Controllers
             repository.VerschiebeArchiviertesBuch(id);
             return RedirectToAction(nameof(Index));
         }
-
-                
-
-        public class ThreadT
-        {
-            private readonly BuecherModell _repository;
-            public ThreadT(BuecherModell repository)
-            {
-                this._repository = repository;
-            }
-            public void StarteThread()
-            {
-                Thread thread1 = new Thread(() => _repository.FaktuelleBuecher());                
-                Thread thread2 = new Thread(() => _repository.FarchivierteBuecher());
-               
-                thread1.Start();
-                thread2.Start();
-
-                thread1.Join();
-                thread2.Join();
-
-            }                     
-        }
-
-        
-
-
-
     }
-
-
-
-
-    
-
-
-    
 }
 
 

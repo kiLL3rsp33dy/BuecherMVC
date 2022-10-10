@@ -8,13 +8,13 @@ namespace BuecherMVC.Models
         private readonly IBuchRepository _repository;
 
 
-        // Konstruktor
+        
         public BuecherModell(IBuchRepository repository)
         {
             this._repository = repository;
         }
 
-
+        // Erstellen der Buecherobjekte und hinzufügen zur aktuellen BuecherListe
         public void FaktuelleBuecher()
         {
             List<BuchDTO>? buecher = _repository.HoleAktuelleBuecher();
@@ -34,6 +34,7 @@ namespace BuecherMVC.Models
            
         }
 
+        // Erstellen der Buecherobjekte und hinzufügen zur archivierten BuecherListe
         public void FarchivierteBuecher()
         {
             List<archiviertesBuchDTO>? buecher = _repository.HoleArchivierteBuecher();
@@ -51,6 +52,7 @@ namespace BuecherMVC.Models
             }
         }
 
+        
         public List<Buch> Buecher { get; set; } = new();
         public List<Buch> ArchivierteBuecher { get; set; } = new();
     }

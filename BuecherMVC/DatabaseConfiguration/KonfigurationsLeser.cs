@@ -8,12 +8,13 @@
     }
 
 
+
     // Schnittstelle: 
     public class KonfigurationsLeser : IKonfigurationsLeser
     {
         private readonly IConfiguration _configuration;
 
-        // Speichert Konfiguration. Von anfang an vorhanden
+        // Speicherung von Konfigurationsdaten
         public KonfigurationsLeser(IConfiguration configuration)
         {
             this._configuration = configuration;
