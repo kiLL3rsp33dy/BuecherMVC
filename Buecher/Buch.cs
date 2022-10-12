@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace Buecher
 {
-    public class Buch
+
+    // Klasse enthält grundlegende Daten eines Buches
+    public abstract class Buch
     {
         public Buch()
         {
@@ -16,8 +18,5 @@ namespace Buecher
         public int Id { get; set; }
 
         public string? Autor { get; set; }
-
-
-
     }
 }

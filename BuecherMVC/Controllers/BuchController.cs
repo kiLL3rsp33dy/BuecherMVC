@@ -5,11 +5,12 @@ using BuchDatenbank;
 using Buecher;
 using System.Dynamic;
 
+//Funktionalität: Das Programm ruft 2 Tabellen (AktuelleBuecher, ArchivierteBuecher) von einer MariaDB-Datenbank ab und stellt diese im Browser dar. Außerdem können Bücher zwischen den 2 Tabellen verschoben werden.
+
 namespace BuecherMVC.Controllers
 {
     public class BuchController : Controller
     {
-
         private readonly KonfigurationsLeser _konfigurationsLeser;
         public BuchController(KonfigurationsLeser konfigurationsleser)
         {
@@ -22,16 +23,20 @@ namespace BuecherMVC.Controllers
             return _konfigurationsLeser.LiesDatenbankVerbindungZurMariaDB();
         }
 
+        // Stellt die Anmeldedaten der Datenbank für die Schnitttelle bereit
+        public DatenbankKontext holeDBKonfiguration()
+        {
+            return new DatenbankKontext(GetConnectionString());
+        }
 
-        // Wird aufgerufen wenn die Buch-Seite angeklickt wird --> Standard-Weiterleitung auf die Index-Seite von Buecher
+        // Anzeige der beiden BuecherListen
         public async Task<IActionResult> Index()
         {
-            string connectionString = this.GetConnectionString(); // Holt die Anmeldedaten für die Datenbank
-            var mariadb = new DatenbankKontext(connectionString); // Speichert ConnectionString in Format DatenbankKontext zur Kommunikation mit der Datenbank
-            var repository = new BuchOrmRepository(mariadb); // Erstellt neue Instanz der Schnittstelle
-            var model = new BuecherModell(repository);
-
-
+            
+            var repository = new BuchOrmRepository(holeDBKonfiguration()); // Erstellt neue Instanz der Schnittstelle
+            var model = new BuecherModell(repository); // Erstellt ein neues BuecherModell
+            
+            // BuecherModell wird mit Daten befüllt
             await Task.Run(() => model.FaktuelleBuecher());
             await Task.Run(() => model.FarchivierteBuecher());
         
@@ -43,9 +48,7 @@ namespace BuecherMVC.Controllers
         [HttpGet]
         public IActionResult VerschiebeAktuelleBuecher(int id)
         {
-            string connectionString = this.GetConnectionString(); // Holt die Anmeldedaten für die Datenbank
-            var mariadb = new DatenbankKontext(connectionString); // Speichert ConnectionString in Format DatenbankKontext zur Kommunikation mit der Datenbank
-            var repository = new BuchOrmRepository(mariadb);
+            var repository = new BuchOrmRepository(holeDBKonfiguration()); // Erstellt neue Instanz der Schnittstelle
             repository.VerschiebeAktuellesBuch(id);
             return RedirectToAction(nameof(Index)); // Weiterleitung auf Index-Seite
         }
@@ -55,11 +58,9 @@ namespace BuecherMVC.Controllers
         [HttpGet]
         public IActionResult VerschiebeArchivierteBuecher(int id)
         {
-            string connectionString = this.GetConnectionString(); // Holt die Anmeldedaten für die Datenbank
-            var mariadb = new DatenbankKontext(connectionString); // Speichert ConnectionString in Format DatenbankKontext zur Kommunikation mit der Datenbank
-            var repository = new BuchOrmRepository(mariadb);
+            var repository = new BuchOrmRepository(holeDBKonfiguration()); // Erstellt neue Instanz der Schnittstelle
             repository.VerschiebeArchiviertesBuch(id);
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index)); // Weiterleitung auf Index-Seite
         }
     }
 }

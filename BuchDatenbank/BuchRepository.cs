@@ -7,8 +7,6 @@ using MySqlConnector;
 
 namespace BuchDatenbank
 {
-
-    // Schnittstelle: Gibt an was gemacht wird aber nicht wie
     public interface IBuchRepository
     {
         List<archiviertesBuchDTO> HoleArchivierteBuecher();
@@ -18,7 +16,7 @@ namespace BuchDatenbank
     }
 
 
-
+    // Repository-Schnittstelle mit Abhängigkeit DatenbankKontext
     public class BuchOrmRepository : IBuchRepository
     {
         private readonly DatenbankKontext _kontext;
@@ -28,8 +26,7 @@ namespace BuchDatenbank
             this._kontext = kontext;
         }
 
-
-        // Aufbau Verbindung und Abfragen der Informationen aus der Datenbank
+        // Fragt die Liste AktuelleBuecher und ArchivierteBuecher in Datenbank ab und gibt diese in Listen zurück
        
         public List<BuchDTO> HoleAktuelleBuecher()
         {
@@ -41,7 +38,7 @@ namespace BuchDatenbank
             return _kontext.Archivierte_Buecher.ToList();
         }
 
-
+        // Verschiebt aktuelles Buch in Datenbank in Table ArchivierteBuecher anhand der ID
         public void VerschiebeAktuellesBuch(int id)
         {
             var BuchInDB = _kontext.Aktuelle_Buecher.First(f => f.Id == id);
@@ -50,7 +47,6 @@ namespace BuchDatenbank
 
             _kontext.Aktuelle_Buecher.Remove(BuchInDB);
             
-
             var buch = new archiviertesBuchDTO();
             buch.Titel = titel;
             buch.Autor = autor;
@@ -58,6 +54,7 @@ namespace BuchDatenbank
             _kontext.SaveChanges();
         }
 
+        // Verschiebt archiviertes Buch in Datenbank in Table AktuelleBuecher anhand der ID
         public void VerschiebeArchiviertesBuch(int id)
         {
             var BuchInDB = _kontext.Archivierte_Buecher.First(f => f.Id == id);
@@ -66,18 +63,11 @@ namespace BuchDatenbank
 
             _kontext.Archivierte_Buecher.Remove(BuchInDB);
 
-
             var buch = new BuchDTO();
             buch.Titel = titel;
             buch.Autor = autor;
             _kontext.Aktuelle_Buecher.Add(buch);
             _kontext.SaveChanges();
         }
-
-
-
-
-
-
     }
 }

@@ -21,14 +21,14 @@ namespace BuecherMVC.Models
 
             foreach (var buchDTO in buecher)
             {
-                var buch = new Buch()
+                var buch = new AktuellesBuch()
                 {
 
                     Id = buchDTO.Id,
                     Titel = buchDTO.Titel,
                     Autor = buchDTO.Autor
                 };
-                this.Buecher.Add(buch);
+                this.AktuelleBuecher.Add(buch);
             }
 
            
@@ -41,7 +41,7 @@ namespace BuecherMVC.Models
 
             foreach (var buchDTO in buecher)
             {
-                var buch = new Buch()
+                var buch = new ArchiviertesBuch()
                 {
 
                     Id = buchDTO.Id,
@@ -53,8 +53,8 @@ namespace BuecherMVC.Models
         }
 
         
-        public List<Buch> Buecher { get; set; } = new();
-        public List<Buch> ArchivierteBuecher { get; set; } = new();
+        public List<AktuellesBuch> AktuelleBuecher { get; set; } = new();
+        public List<ArchiviertesBuch> ArchivierteBuecher { get; set; } = new();
     }
 }    
 

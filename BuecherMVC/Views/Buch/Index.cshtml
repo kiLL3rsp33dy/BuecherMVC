@@ -1,12 +1,9 @@
-﻿
-
-
-
-
+﻿@model BuecherModell
 
  <div class="container">
      <div class="row">
          <div class="col">
+            @*Erzeugen der Liste mit den Aktuellen Büchern*@
             <p>Aktuelle Buecher:</p>
             <table class="table table-hover mb-0">
                 <thead>
@@ -18,7 +15,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var buch in Model.Buecher)
+                    @foreach (var buch in Model.AktuelleBuecher)
                     {
                         <tr>
                             <td>@buch.Id</td>
@@ -31,6 +28,7 @@
             </table>
         </div>
         <div class="col">
+            @*Erzeugen der Liste mit den Archivierten Büchern*@
             <p>Archivierte Buecher:</p>
             <table class="table table-hover mb-0"> 
             <thead>

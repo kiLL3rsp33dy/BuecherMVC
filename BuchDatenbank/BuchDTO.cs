@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 namespace BuchDatenbank
 {
 
+    // Transferobjekte, Mappen von Tabelle auf Klasse
+
     [Table("Aktuelle_Buecher")]
     
     public class BuchDTO

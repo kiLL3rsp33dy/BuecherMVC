@@ -1,26 +1,22 @@
 ﻿namespace BuecherMVC.DatabaseConfiguration
 {
 
-    // Interface: Sammlung abstrakter Methoden
     public interface IKonfigurationsLeser
     {
         string LiesDatenbankVerbindungZurMariaDB();
     }
 
-
-
-    // Schnittstelle: 
+    // Ermöglicht Auslesen der Schnittstellendaten
     public class KonfigurationsLeser : IKonfigurationsLeser
     {
         private readonly IConfiguration _configuration;
 
-        // Speicherung von Konfigurationsdaten
         public KonfigurationsLeser(IConfiguration configuration)
         {
             this._configuration = configuration;
         }
 
-        // Liest den ConnectionString aus der appsettings.json und gibt ihn zurück
+        // Liest den ConnectionString der MariaDB aus der appsettings.json
         public string LiesDatenbankVerbindungZurMariaDB()
         {
             return _configuration.GetConnectionString("MariaDB");

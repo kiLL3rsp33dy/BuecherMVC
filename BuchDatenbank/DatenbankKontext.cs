@@ -25,9 +25,9 @@ namespace BuchDatenbank
 
         }
 
-        // Tabellen in Datenbank
-        public DbSet<BuchDTO> Aktuelle_Buecher { get; set; }
-        public DbSet<archiviertesBuchDTO> Archivierte_Buecher { get; set; }
+        // Erstellt Instanz der Entitäten
+        public DbSet<BuchDTO> Aktuelle_Buecher { get; set; } = null!;
+        public DbSet<archiviertesBuchDTO> Archivierte_Buecher { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

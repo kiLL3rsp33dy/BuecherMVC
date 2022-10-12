@@ -21,12 +21,6 @@ builder.Services.AddScoped(
 builder.Services.AddScoped<IBuchRepository, BuchOrmRepository>();
 
 
-/*builder.Services.AddScoped<IBuchRepository>(
-    sp => new BuchRepository(
-        sp.GetRequiredService<IKonfigurationsLeser>()
-        .LiesDatenbankVerbindungZurMariaDB()));
-*/
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
